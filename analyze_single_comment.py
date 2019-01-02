@@ -30,12 +30,17 @@ from utils import Lang, encode_text
 
 
 def analyze_single_comment(comment):
+    encoder, voc = init()
+    return analyze_after_init(comment, encoder, voc)
+
+
+def init(basePath=""):
     # 加载词库
-    voc = Lang('data/WORDMAP.json')
+    voc = Lang(basePath + 'data/WORDMAP.json')
     print("voc.n_words: " + str(voc.n_words))
 
     # Load model
-    checkpoint = torch.load('{}/BEST_checkpoint.tar'.format(save_folder), map_location='cpu')
+    checkpoint = torch.load(basePath + '{}/BEST_checkpoint.tar'.format(save_folder), map_location='cpu')
     encoder = checkpoint['encoder']
 
     # Use appropriate device
@@ -44,6 +49,10 @@ def analyze_single_comment(comment):
     # Set dropout layers to eval mode
     encoder.eval()
 
+    return encoder, voc
+
+
+def analyze_after_init(comment, encoder, voc):
     # 构造分析对象
     sample = {'content': comment, 'label_tensor': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
     pair_batch = []
@@ -54,16 +63,7 @@ def analyze_single_comment(comment):
 
     # 分词
     seg_list = jieba.cut(content)
-    # print("分词结果:")
-    # for seg in seg_list:
-    #     print(seg)
-    # 过滤分词结果
     input_indexes = encode_text(voc.word2index, list(seg_list))
-    # print("语料库匹配结果")
-    # for index in input_indexes:
-    #     for k,v in voc.word2index.items():
-    #         if v==index:
-    #             print(k)
     label_tensor = sample['label_tensor']
     pair_batch.append((input_indexes, label_tensor))
 
@@ -87,3 +87,4 @@ if __name__ == '__main__':
     一直都很喜欢吃蛋糕，在家的附近就有一家，所以经常来光顾，渐渐地就喜欢上了这家蛋糕店，我经常过来买，有时候当早饭，有时候当点心，这家店的面包跟蛋糕我都喜欢吃，刚开始是直接买，后来发现网上有优惠劵就团优惠劵，还比较便宜。前段时间大众点评推出周四半价，我觉得这是活动特别好，又实惠了顾客，又给店家招揽生意，不错，就是希望周四半价最好不要限时间或者限购，因为有时候上班时间上凑不好,这样的话下了班也能买，或者一早上班的时候买。呵呵~当然希望大众给我们多多的谋福利啦！哈哈，说回重点，面包好吃～
     """)
     print(a)
+    print(type(a))
