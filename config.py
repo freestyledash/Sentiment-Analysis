@@ -19,21 +19,35 @@ encoder_n_layers = 2
 dropout = 0.05
 batch_first = False
 
-train_folder = 'data/ai_challenger_sentiment_analysis_trainingset_20180816'
-valid_folder = 'data/ai_challenger_sentiment_analysis_validationset_20180816'
-test_a_folder = 'data/ai_challenger_sentiment_analysis_testa_20180816'
+# configure path and file name
+train_folder = 'data/'
+valid_folder = 'data/'
+test_a_folder = 'data/'
+train_filename = 'trainingset.csv'
+valid_filename = 'validationset.csv'
+test_a_filename = 'testa.csv'
 
-train_filename = 'sentiment_analysis_trainingset.csv'
-valid_filename = 'sentiment_analysis_validationset.csv'
-test_a_filename = 'sentiment_analysis_testa.csv'
-
-label_names = ['location_traffic_convenience', 'location_distance_from_business_district', 'location_easy_to_find',
-               'service_wait_time', 'service_waiters_attitude', 'service_parking_convenience', 'service_serving_speed',
-               'price_level', 'price_cost_effective', 'price_discount', 'environment_decoration', 'environment_noise',
-               'environment_space', 'environment_cleaness', 'dish_portion', 'dish_taste', 'dish_look',
+label_names = ['location_traffic_convenience',
+               'location_distance_from_business_district',
+               'location_easy_to_find',
+               'service_wait_time',
+               'service_waiters_attitude',
+               'service_parking_convenience',
+               'service_serving_speed',
+               'price_level',
+               'price_cost_effective',
+               'price_discount',
+               'environment_decoration',
+               'environment_noise',
+               'environment_space',
+               'environment_cleaness',
+               'dish_portion',
+               'dish_taste',
+               'dish_look',
                'dish_recommendation',
-               'others_overall_experience', 'others_willing_to_consume_again']
-assert len(label_names) == 20
+               'others_overall_experience',
+               'others_willing_to_consume_again']
+
 
 # Default word tokens
 PAD_token = 0  # Used for padding short sentences

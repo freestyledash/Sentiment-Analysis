@@ -9,11 +9,16 @@ from utils import parse_user_reviews
 
 
 def build_wordmap(contents):
+    """
+    分词并统计词出现的频率,存储出现频率大于min_word_freq
+    :param contents:
+    :return:
+    """
     word_freq = Counter()
 
+    # 分词
     for sentence in tqdm(contents):
         seg_list = jieba.cut(sentence.strip())
-        # Update word frequency
         word_freq.update(list(seg_list))
 
     # Create word map
@@ -24,7 +29,6 @@ def build_wordmap(contents):
     word_map['<end>'] = 2
     word_map['<unk>'] = 3
     print('len(word_map): ' + str(len(word_map)))
-    print(words[:10])
 
     with open('data/WORDMAP.json', 'w') as file:
         json.dump(word_map, file, indent=4)
@@ -33,5 +37,3 @@ def build_wordmap(contents):
 if __name__ == '__main__':
     user_reviews = parse_user_reviews('train')
     build_wordmap(user_reviews['content'])
-
-    parse_user_reviews('valid')

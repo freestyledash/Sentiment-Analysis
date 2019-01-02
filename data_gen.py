@@ -1,3 +1,4 @@
+# coding=utf8
 import itertools
 
 import jieba
@@ -20,6 +21,10 @@ def map_sentimental_type(value):
 
 
 def parse_user_reviews(user_reviews):
+    """
+    :param user_reviews:
+    :return:
+    """
     samples = []
     for i in range(len(user_reviews)):
         content = user_reviews['content'][i]

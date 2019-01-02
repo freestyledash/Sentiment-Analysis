@@ -1,3 +1,4 @@
+# coding=utf8
 import datetime
 import json
 import os
@@ -13,6 +14,9 @@ def encode_text(word_map, c):
 
 
 class Lang:
+    """
+    词语库对象
+    """
     def __init__(self, filename):
         word_map = json.load(open(filename, 'r'))
         self.word2index = word_map
@@ -90,6 +94,12 @@ def save_checkpoint(epoch, encoder, optimizer, val_acc, is_best):
 
 
 def encode_text(word_map, c):
+    """
+    获得输入序列，
+    :param word_map: 提取出的词语字典
+    :param c: 待分析句子分词之后的词语list
+    :return:
+    """
     return [word_map.get(word, word_map['<unk>']) for word in c] + [word_map['<end>']]
 
 
@@ -103,6 +113,11 @@ def accuracy(scores, targets, k=1):
 
 
 def parse_user_reviews(split):
+    """
+    从csv加载用户评论到内存中
+    :param split: 用户评论文件类型
+    :return: 用户评论
+    """
     if split == 'train':
         filename = os.path.join(train_folder, train_filename)
     elif split == 'valid':

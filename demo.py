@@ -19,7 +19,7 @@ if __name__ == '__main__':
     print('checkpoint: ' + str(checkpoint))
 
     # Load model
-    checkpoint = torch.load(checkpoint)
+    checkpoint = torch.load(checkpoint,map_location='cpu')
     encoder = checkpoint['encoder']
 
     # Use appropriate device
@@ -37,7 +37,6 @@ if __name__ == '__main__':
     result = []
     for i, sample in enumerate(samples):
         content = sample['content']
-        # print(content)
         result.append({'content': content})
         content = content.strip()
         seg_list = jieba.cut(content)

@@ -1,3 +1,6 @@
 .idea
 data/
 models/
+.iml
+models
+result.json
