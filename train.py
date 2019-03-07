@@ -121,9 +121,9 @@ def valid(val_data, encoder):
 
 
 def main():
+    # 加载词库
     voc = Lang('data/WORDMAP.json')
     print("voc.n_words: " + str(voc.n_words))
-
     train_data = SaDataset('train', voc)
     val_data = SaDataset('valid', voc)
 

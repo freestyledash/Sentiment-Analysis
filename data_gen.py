@@ -38,13 +38,27 @@ def parse_user_reviews(user_reviews):
         samples.append({'content': content, 'label_tensor': label_tensor})
     return samples
 
-
-def zeroPadding(l, fillvalue=PAD_token):
-    return list(itertools.zip_longest(*l, fillvalue=fillvalue))
+# todo 3
+def zeroPadding(indexes_batch, fillvalue=PAD_token):
+    '''
+    0填充
+    :param indexes_batch: [[word indexs],[...]]
+    :param fillvalue:  填充值
+    :return:
+    '''
+    # zip_longest('ABCD', 'xy', fillvalue='-') --> Ax By C- D-
+    return list(itertools.zip_longest(*indexes_batch, fillvalue=fillvalue))
 
 
 # Returns padded input sequence tensor and lengths
+# todo 2
 def inputVar(indexes_batch):
+    '''
+
+    :param indexes_batch: 批量的评价文本 []
+    :return:padlist,lengths
+    '''
+    # todo ???
     lengths = torch.tensor([len(indexes) for indexes in indexes_batch])
     padList = zeroPadding(indexes_batch)
     padVar = torch.LongTensor(padList)
@@ -52,7 +66,13 @@ def inputVar(indexes_batch):
 
 
 # Returns all items for a given batch of pairs
+# 批量转化
+# todo 1
 def batch2TrainData(pair_batch):
+    '''
+    :param pair_batch: [([iuput word index] ,[list result]), ...]
+    :return:
+    '''
     pair_batch.sort(key=lambda x: len(x[0]), reverse=True)
     input_batch, output_batch = [], []
     for pair in pair_batch:
@@ -64,6 +84,9 @@ def batch2TrainData(pair_batch):
 
 
 class SaDataset(Dataset):
+    '''
+
+    '''
     def __init__(self, split, voc):
         self.split = split
         self.voc = voc
@@ -96,3 +119,8 @@ class SaDataset(Dataset):
 
     def __len__(self):
         return self.num_chunks
+
+
+if __name__ == '__main__':
+    tensor = torch.tensor([1, 3, 1])
+    print(tensor)

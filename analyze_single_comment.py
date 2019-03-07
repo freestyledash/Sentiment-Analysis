@@ -10,21 +10,12 @@
                    2018/12/13:
 -------------------------------------------------
 """
-from collections import Counter
-
-from pre_process import build_wordmap
-
 __author__ = 'zhangyanqi'
-
-# import the necessary packages
-import json
-import os
-import random
 
 import jieba
 import torch
 
-from config import device, save_folder, valid_folder, valid_filename, min_word_freq
+from config import device, save_folder
 from data_gen import parse_user_reviews, batch2TrainData
 from utils import Lang, encode_text
 
@@ -68,8 +59,8 @@ def analyze_after_init(comment, encoder, voc):
     pair_batch.append((input_indexes, label_tensor))
 
     # 分析
-    test_data = batch2TrainData(pair_batch)
-    input_variable, lengths, _ = test_data
+    # todo what?
+    input_variable, lengths, _ = batch2TrainData(pair_batch)
     input_variable = input_variable.to(device)
     lengths = lengths.to(device)
     outputs = encoder(input_variable, lengths)
@@ -80,7 +71,6 @@ def analyze_after_init(comment, encoder, voc):
     # 整理输出
     result[0]['labels'] = (outputs[0] - 2).tolist()
     return result[0]
-
 
 if __name__ == '__main__':
     a = analyze_single_comment("""

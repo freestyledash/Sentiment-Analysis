@@ -31,13 +31,11 @@ app = Flask(__name__)
 def hello():
     comment = str(request.args.get('comment', ''))
     result = analyze_after_init(comment, encoder, voc)
-    print(result)
     string = json.dumps(result)
     return string
 
 
 if __name__ == "__main__":
-    # init phase
     print("begin init phase")
     global encoder
     global voc
