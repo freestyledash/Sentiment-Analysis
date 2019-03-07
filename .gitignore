@@ -6,3 +6,4 @@ models
 result.json
 .DS_Store
 __pycache__
+*.iml
