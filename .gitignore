@@ -1,6 +1,8 @@
 .idea
 data/
+!data/readme.me
 models/
+!models/readme.md
 .iml
 models
 result.json
