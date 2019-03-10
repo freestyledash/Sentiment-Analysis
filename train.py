@@ -5,7 +5,7 @@ import torch
 from torch import nn
 from torch import optim
 
-from config import device, label_names, print_every, hidden_size, encoder_n_layers, dropout, learning_rate, start_epoch, \
+from config import device, label_names, print_every, hidden_size, encoder_n_layers, dropout, learning_rate, \
     epochs
 from data_gen import SaDataset
 from models import EncoderRNN
@@ -13,10 +13,20 @@ from utils import AverageMeter, ExpoAverageMeter, accuracy, Lang, timestamp, adj
 
 
 def train(epoch, train_data, encoder, optimizer):
+    '''
+    训练
+    :param epoch:
+    :param train_data:
+    :param encoder:
+    :param optimizer: 优化器算法 sgd -> adam ->adagrad -> rmsprop 看torch文档
+    :return:
+    '''
     # Ensure dropout layers are in train mode
+    # 将模型状态设置为训练状态（会启用某些机制  ps：模型状态一般有 train 和 eval
     encoder.train()
 
     # Loss function
+    # 模型（评判函数），没有状态  loop:  input -> model ->output-criterion->loss  loss影响model参数，我们期望loss下降
     criterion = nn.CrossEntropyLoss().to(device)
 
     batch_time = AverageMeter()  # forward prop. + back prop. time
@@ -26,8 +36,10 @@ def train(epoch, train_data, encoder, optimizer):
     start = time.time()
 
     # Batches
+    # 开始训练，监督学习
     for i_batch, (input_variable, lengths, target_variable) in enumerate(train_data):
-        # Zero gradients
+        # 每个tensor包含输入的数据和grad（梯度），
+        # Zero gradients 清零所有tensor的grad
         optimizer.zero_grad()
 
         # Set device options
@@ -45,12 +57,15 @@ def train(epoch, train_data, encoder, optimizer):
         loss = 0
         acc = 0
 
+        # 使用criterion函数对结果进行评价
         for idx, _ in enumerate(label_names):
             loss += criterion(outputs[:, :, idx], target_variable[:, idx]) / len(label_names)
             acc += accuracy(outputs[:, :, idx], target_variable[:, idx]) / len(label_names)
 
+        # 根据loss算所有参数的梯度，并给tensor.grad赋值
         loss.backward()
 
+        # 开始优化被允许优化的参数
         optimizer.step()
 
         # Keep track of metrics
@@ -72,9 +87,17 @@ def train(epoch, train_data, encoder, optimizer):
 
 
 def valid(val_data, encoder):
+    '''
+    跑认证数据，避免过拟合，（意思是避免模型只在训练的数据上运行结果很好
+    :param val_data:
+    :param encoder:
+    :return:
+    accs.avg, losses.avg
+    '''
     encoder.eval()  # eval mode (no dropout or batchnorm)
 
     # Loss function
+    # todo
     criterion = nn.CrossEntropyLoss().to(device)
 
     batch_time = AverageMeter()  # forward prop. + back prop. time
@@ -128,20 +151,31 @@ def main():
     val_data = SaDataset('valid', voc)
 
     # Initialize encoder
+    # todo
+    '''
+    词表里面的单词数量
+    隐含层大小
+    rnn层数
+    某个机制...
+    '''
     encoder = EncoderRNN(voc.n_words, hidden_size, encoder_n_layers, dropout)
 
-    # Use appropriate device
+    # Use appropriate device ,此时模型都是初始值
     encoder = encoder.to(device)
 
-    # Initialize optimizers
+    # Initialize optimizers  创建优化器，梯度下降，能自动调整模型的参数
+    # optim是一个pytorch的一个包，adam是一个优化算法，梯度下降
     print('Building optimizers ...')
+    # todo
+    # 模型所有参数，lr学习率
     optimizer = optim.Adam(encoder.parameters(), lr=learning_rate)
 
     best_acc = 0
+    # todo
     epochs_since_improvement = 0
 
-    # Epochs
-    for epoch in range(start_epoch, epochs):
+    # Epochs 所有数据都跑一遍，叫做epochs
+    for epoch in range(0, epochs):
         # Decay learning rate if there is no improvement for 8 consecutive epochs, and terminate training after 20
         if epochs_since_improvement == 20:
             break

@@ -38,6 +38,7 @@ def parse_user_reviews(user_reviews):
         samples.append({'content': content, 'label_tensor': label_tensor})
     return samples
 
+
 # todo 3
 def zeroPadding(indexes_batch, fillvalue=PAD_token):
     '''
@@ -51,14 +52,11 @@ def zeroPadding(indexes_batch, fillvalue=PAD_token):
 
 
 # Returns padded input sequence tensor and lengths
-# todo 2
 def inputVar(indexes_batch):
     '''
-
     :param indexes_batch: 批量的评价文本 []
-    :return:padlist,lengths
+    :return:padlist 每个句子对其长度之后的结果,lengths  每个句子的长度
     '''
-    # todo ???
     lengths = torch.tensor([len(indexes) for indexes in indexes_batch])
     padList = zeroPadding(indexes_batch)
     padVar = torch.LongTensor(padList)
@@ -67,11 +65,10 @@ def inputVar(indexes_batch):
 
 # Returns all items for a given batch of pairs
 # 批量转化
-# todo 1
 def batch2TrainData(pair_batch):
     '''
     :param pair_batch: [([iuput word index] ,[list result]), ...]
-    :return:
+    :return: inp 输入的句子集合（长度对其后） lengths 输入的每个句子的长度 output 输出结果
     '''
     pair_batch.sort(key=lambda x: len(x[0]), reverse=True)
     input_batch, output_batch = [], []
@@ -87,6 +84,7 @@ class SaDataset(Dataset):
     '''
 
     '''
+
     def __init__(self, split, voc):
         self.split = split
         self.voc = voc

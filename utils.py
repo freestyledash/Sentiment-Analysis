@@ -105,6 +105,13 @@ def encode_text(word_map, c):
 
 
 def accuracy(scores, targets, k=1):
+    '''
+    计算准确率
+    :param scores:
+    :param targets:
+    :param k:
+    :return:
+    '''
     batch_size = targets.size(0)
     _, ind = scores.topk(k, 1, True, True)
     correct = ind.eq(targets.view(-1, 1).expand_as(ind))

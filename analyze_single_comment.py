@@ -26,6 +26,11 @@ def analyze_single_comment(comment):
 
 
 def init(basePath=""):
+    '''
+
+    :param basePath:
+    :return: encoder 模型 voc wm对象
+    '''
     # 加载词库
     voc = Lang(basePath + 'data/WORDMAP.json')
     print("voc.n_words: " + str(voc.n_words))
@@ -59,18 +64,23 @@ def analyze_after_init(comment, encoder, voc):
     pair_batch.append((input_indexes, label_tensor))
 
     # 分析
-    # todo what?
+    # 将数据整理为tensor
     input_variable, lengths, _ = batch2TrainData(pair_batch)
+    # 设置用什么device处理数据
     input_variable = input_variable.to(device)
     lengths = lengths.to(device)
+    # 使用encoder 计算输入得到输出
     outputs = encoder(input_variable, lengths)
+    # 取出第一个维度的最大值
     _, outputs = torch.max(outputs, 1)
     print('outputs.size(): ' + str(outputs.size()))
+    # 将输出数据转移到内存中，并将类型转换为numpy
     outputs = outputs.cpu().numpy()
 
     # 整理输出
     result[0]['labels'] = (outputs[0] - 2).tolist()
     return result[0]
+
 
 if __name__ == '__main__':
     a = analyze_single_comment("""

@@ -11,8 +11,7 @@ num_labels = 20
 num_classes = 4  # number of sentimental types
 save_folder = 'models'
 
-# Configure models
-start_epoch = 0
+# Configure models 超参数
 epochs = 120
 hidden_size = 500
 encoder_n_layers = 2
