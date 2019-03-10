@@ -1,10 +1,9 @@
 .idea
-data/
+data/*
 !data/readme.md
-models/
+models/*
 !models/readme.md
 .iml
-models
 result.json
 .DS_Store
 __pycache__
