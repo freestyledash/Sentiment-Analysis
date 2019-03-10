@@ -1,6 +1,6 @@
 .idea
 data/
-!data/readme.me
+!data/readme.md
 models/
 !models/readme.md
 .iml
