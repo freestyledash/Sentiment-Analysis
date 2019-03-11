@@ -8,20 +8,19 @@ from config import num_labels, num_classes, batch_first
 
 class EncoderRNN(nn.Module):
     '''
-    模型
+    模型，用于分析一句话的内容
     三层：
     编码：
     embeding  得到一个 n* hiden的词向量
     gru 双向gru
     计算，判断打什么标签
     fc
-
     改进embing + gru替代
     '''
 
     def __init__(self, input_size, hidden_size, n_layers=1, dropout=0):
         super(EncoderRNN, self).__init__()
-        # rnn层数
+        # rnn层数 5层以内
         self.n_layers = n_layers
         # rnn 隐层大小，用于记录历史信息，输出向量大小
         self.hidden_size = hidden_size

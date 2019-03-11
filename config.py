@@ -3,16 +3,16 @@ import torch
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # Configure training/optimization
-learning_rate = 0.002
+learning_rate = 0.002   # 学习率
 min_word_freq = 3
 print_every = 100
-chunk_size = 100
-num_labels = 20
+chunk_size = 100 # 分组大小
+num_labels = 20  # 评价指标个数
 num_classes = 4  # number of sentimental types
-save_folder = 'models'
+save_folder = 'models' # 存储的路径
 
 # Configure models 超参数
-epochs = 120
+epochs = 120 # 训练的次数
 hidden_size = 500
 encoder_n_layers = 2
 dropout = 0.05

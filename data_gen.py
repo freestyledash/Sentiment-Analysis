@@ -17,17 +17,25 @@ def to_categorical(y, num_classes):
 # Old labels    1	        0	        -1	        -2
 # New labels    3           2           1           0
 def map_sentimental_type(value):
+    '''
+    将原始的情感值+2变成非负数
+    :param value:
+    :return:
+    '''
     return value + 2
 
 
 def parse_user_reviews(user_reviews):
     """
+    解析评论数据
+    todo
     :param user_reviews:
-    :return:
+    :return: samples
     """
     samples = []
     for i in range(len(user_reviews)):
         content = user_reviews['content'][i]
+        # 构造一个20*1的矩阵，类型是int
         label_tensor = np.empty((num_labels,), dtype=np.int32)
         for idx, name in enumerate(label_names):
             sentimental_type = user_reviews[name][i]
@@ -39,7 +47,6 @@ def parse_user_reviews(user_reviews):
     return samples
 
 
-# todo 3
 def zeroPadding(indexes_batch, fillvalue=PAD_token):
     '''
     0填充
@@ -64,9 +71,9 @@ def inputVar(indexes_batch):
 
 
 # Returns all items for a given batch of pairs
-# 批量转化
 def batch2TrainData(pair_batch):
     '''
+    将输入编码整理成为模型识别的格式
     :param pair_batch: [([iuput word index] ,[list result]), ...]
     :return: inp 输入的句子集合（长度对其后） lengths 输入的每个句子的长度 output 输出结果
     '''
@@ -82,7 +89,11 @@ def batch2TrainData(pair_batch):
 
 class SaDataset(Dataset):
     '''
-
+        数据集
+        spilt 数据类型
+        voc 词库
+        samples 样本，格式：
+        num_chunks 组数
     '''
 
     def __init__(self, split, voc):
@@ -98,6 +109,7 @@ class SaDataset(Dataset):
             filename = os.path.join(test_a_folder, test_a_filename)
 
         user_reviews = pd.read_csv(filename)
+        # 解析数据集 解析成为{'content': content, 'label_tensor': label_tensor}的格式
         self.samples = parse_user_reviews(user_reviews)
         self.num_chunks = len(self.samples) // chunk_size
 
