@@ -15,7 +15,9 @@ from utils import AverageMeter, ExpoAverageMeter, accuracy, Lang, timestamp, adj
 def train(epoch, train_data, encoder, optimizer):
     '''
     训练
-    流程：input -> model -> output -> criterion -> loss  将input放入模型进行训练，得到output，使用评判函数进行评判得到loss，使用优化函数进行优化，我们期望loss下降
+    流程：input -> model -> output -> criterion -> loss
+    将input放入模型进行训练，得到output，使用评判函数进行评判得到loss，
+    使用优化函数进行优化，我们期望loss下降
     :param epoch:  训练次数
     :param train_data: SaDataset对象，存放训练集和词表
     :param encoder: 模型
@@ -156,7 +158,6 @@ def main():
     optimizer = optim.Adam(encoder.parameters(), lr=learning_rate)
     # 基础准确率
     best_acc = 0
-    # todo
     epochs_since_improvement = 0
 
     # epochs 训练的次数

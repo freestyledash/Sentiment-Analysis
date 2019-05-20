@@ -24,10 +24,10 @@ def build_wordmap(contents):
     # Create word map
     words = [w for w in word_freq.keys() if word_freq[w] > min_word_freq]
     word_map = {k: v + 4 for v, k in enumerate(words)}
-    word_map['<pad>'] = 0  # ??
+    word_map['<pad>'] = 0
     word_map['<start>'] = 1
     word_map['<end>'] = 2
-    word_map['<unk>'] = 3  # unkonw?
+    word_map['<unk>'] = 3
     print('len(word_map): ' + str(len(word_map)))
 
     with open('data/WORDMAP.json', 'w') as file:
@@ -35,5 +35,7 @@ def build_wordmap(contents):
 
 
 if __name__ == '__main__':
+    # 加载训练集
     user_reviews = parse_user_reviews('train')
+    # 构建wp
     build_wordmap(user_reviews['content'])
