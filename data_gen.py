@@ -74,7 +74,7 @@ def inputVar(indexes_batch):
 def batch2TrainData(pair_batch):
     '''
     将输入编码整理成为模型识别的格式
-    :param pair_batch: [([iuput word index] ,[list result]), ...]
+    :param pair_batch: [[[iuput word index] ,[list result]), ...]
     :return: inp 输入的句子集合（长度对其后） lengths 输入的每个句子的长度 output 输出结果
     '''
     pair_batch.sort(key=lambda x: len(x[0]), reverse=True)

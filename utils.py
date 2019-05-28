@@ -17,7 +17,6 @@ class Lang:
     """
     词语库对象
     """
-
     def __init__(self, filename):
         word_map = json.load(open(filename, 'r'))
         self.word2index = word_map
@@ -29,7 +28,6 @@ class AverageMeter(object):
     """
     Keeps track of most recent, average, sum, and count of a metric.
     """
-
     def __init__(self):
         self.reset()
 
